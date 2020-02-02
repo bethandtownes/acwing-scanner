@@ -243,8 +243,6 @@ public class InputReader {
       try {
         curPos = 0;
         numChars = stream.read(buffer);
-        if (numChars == -1)
-          throw new InputMismatchException();
       } catch (IOException e) {
         throw new InputMismatchException();
       }
@@ -252,8 +250,9 @@ public class InputReader {
   }
 
   private byte _read() {
-    refreshBuffer();
-    return buffer[curPos++];
+      refreshBuffer();
+      if (numChars == -1)
+        return '\0';
+      return buffer[curPos++];
   };
-  
 }
