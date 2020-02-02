@@ -2,32 +2,6 @@
 #define SCANNER_H
 
 #include <bits/stdc++.h>
-#define see(...) " [" << #__VA_ARGS__ ": " << (__VA_ARGS__) << "] "
-#define trace(x) (cout << see(x) << endl, x)
-#define traceX(x) x
-using namespace std;
-
-template <typename T>
-std::ostream& operator << (std::ostream& os, const vector<T>& x) {
-  os << "[";
-  for (auto it = begin(x); it != end(x); ++it) {
-    os << (it == begin(x) ? "" : ", ") << *it;
-  }
-  os << "]";
-  return os;
-}
-
-
-template <typename T>
-std::ostream& operator << (std::ostream& os, const vector<vector<T>>& x) {
-  os << "\n[";
-  for (auto it = begin(x); it != end(x); ++it) {
-    os << (it == begin(x) ? "" : "\n ") << *it;
-  }
-  os << "]";
-  return os;
-}
-
 
 using namespace std;
 
@@ -42,17 +16,21 @@ template<typename T> inline constexpr bool is_pair_v = is_pair<T>::value;
 }
 
 class input_reader {
- public:
+ private:
   static constexpr int BUFFER_SIZE = 1024;
-  size_t num_chars;
-  size_t cur_pos;
+  size_t num_chars_;
+  size_t cur_pos_;
   std::istream& input_stream_;
-  bool auto_reload;
-  char buffer[BUFFER_SIZE];
+  bool auto_reload_;
+  char buffer_[BUFFER_SIZE];
 
-  input_reader(std::istream& input_stream = std::cin) : cur_pos(0), num_chars(0), auto_reload(true), input_stream_(input_stream) {};
+ public:
+  input_reader(std::istream& input_stream = std::cin) : cur_pos_(0),
+                                                        num_chars_(0),
+                                                        auto_reload_(true),
+                                                        input_stream_(input_stream) {};
 
-  inline char peek() { return ready(), buffer[cur_pos]; };
+  inline char peek() { return ready(), buffer_[cur_pos_]; };
 
   template<class data_t, typename std::enable_if_t<std::is_same_v<char, data_t>>* = nullptr>
   inline data_t read() {
@@ -98,10 +76,10 @@ class input_reader {
   data_t read() {
     ready();
     const auto val = [&](data_t self = {}) {
-      auto_reload = false;
+      auto_reload_ = false;
       while(ready())
         self.emplace_back(read<typename data_t::value_type>());
-      auto_reload = true;
+      auto_reload_ = true;
       return self;
     }();
     return val;
@@ -163,60 +141,59 @@ class input_reader {
     return before_decimal + after_decimal;
   }
 
+ private:
   inline void refresh_buffer() {
-    if (auto_reload and cur_pos >= num_chars) {
-      cur_pos = 0;
-      input_stream_.getline(buffer, BUFFER_SIZE);
-      num_chars = std::cin.gcount();
+    if (auto_reload_ and cur_pos_ >= num_chars_) {
+      cur_pos_ = 0;
+      input_stream_.getline(buffer_, BUFFER_SIZE);
+      num_chars_ = std::cin.gcount();
     }
    }
 
-  inline char _read() { return refresh_buffer(), buffer[cur_pos++]; };
+  inline char _read() { return refresh_buffer(), buffer_[cur_pos_++]; };
   
   inline bool is_space (char ch) { return ch == ' ' or ch == '\n' or ch == '\t' or ch == '\0'; };
   
   inline bool ready() {
     refresh_buffer();
-    if (not auto_reload and cur_pos >= num_chars)
+    if (not auto_reload_ and cur_pos_ >= num_chars_)
       return false;
-    else if (not auto_reload and cur_pos < num_chars) {
-      while (is_space(buffer[cur_pos]) and cur_pos < num_chars)
-        cur_pos++;
-      return cur_pos < num_chars;
+    else if (not auto_reload_ and cur_pos_ < num_chars_) {
+      while (is_space(buffer_[cur_pos_]) and cur_pos_ < num_chars_)
+        cur_pos_++;
+      return cur_pos_ < num_chars_;
     }
-    else if (auto_reload) {
-      while (is_space(buffer[cur_pos]))
-        cur_pos++;
+    else if (auto_reload_) {
+      while (is_space(buffer_[cur_pos_]))
+        cur_pos_++;
       return true;
     }
     else throw std::domain_error("");
   }
   
 
-  void debug(string level) {
-    const auto view = [&](vector<string> self = {}) {
-      std::transform(buffer, buffer + 30, std::back_inserter(self), [&](auto x) {
-        if (x == '\0')
-          return std::string("END");
-        else if (x == ' ')
-          return std::string("SPACE");
-        else if (x == '\n')
-          return std::string("NEWLINE");
-        else
-          return std::string(1, x);
-      });
-      return self;
-    }();
+  // void debug(string level) {
+  //   const auto view = [&](vector<string> self = {}) {
+  //     std::transform(buffer_, buffer_ + 30, std::back_inserter(self), [&](auto x) {
+  //       if (x == '\0')
+  //         return std::string("END");
+  //       else if (x == ' ')
+  //         return std::string("SPACE");
+  //       else if (x == '\n')
+  //         return std::string("NEWLINE");
+  //       else
+  //         return std::string(1, x);
+  //     });
+  //     return self;
+  //   }();
     
-    cout << level
-         << see(view)
-         << see(cur_pos)
-         << see(view[cur_pos])
-         << see(num_chars)
-         << endl;
-  }
-
-
+  //   cout << level
+  //        << see(view)
+  //        << see(cur_pos_)
+  //        << see(view[cur_pos_])
+  //        << see(num_chars_)
+  //        << endl;
+  // }
 };
 
 
