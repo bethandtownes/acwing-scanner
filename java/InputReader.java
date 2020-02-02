@@ -5,10 +5,11 @@ import java.util.InputMismatchException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.io.DataInputStream;
 
 public class InputReader {
   public static final int BUFFER_SIZE = 1024;
-  private InputStream stream;
+  private DataInputStream stream;
   private byte[] buffer = new byte[BUFFER_SIZE];
   private int curPos;
   private int numChars;
@@ -17,12 +18,11 @@ public class InputReader {
 
 
   public InputReader(InputStream stream) {
-    this.stream = stream;
+    this.stream = new DataInputstream(stream);
     this.curPos = 0;
     this.numChars = 0;
     this.autoReload = true;
   }
-
 
   public char readChar() {
     ready();
