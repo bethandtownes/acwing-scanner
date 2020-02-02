@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #include "scanner.h"
+using namespace std;
 template <typename T>
 std::ostream& operator << (std::ostream& os, const vector<T>& x) {
   os << "[";

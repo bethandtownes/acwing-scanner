@@ -3,7 +3,7 @@
 
 #include <bits/stdc++.h>
 
-using namespace std;
+// using namespace std;
 
 namespace acwing {
 template<class T> struct is_vector { using type = T ; constexpr static bool value = false;};
@@ -18,8 +18,8 @@ template<typename T> inline constexpr bool is_pair_v = is_pair<T>::value;
 class input_reader {
  private:
   static constexpr int BUFFER_SIZE = 1024;
-  size_t num_chars_;
-  size_t cur_pos_;
+  std::size_t num_chars_;
+  std::size_t cur_pos_;
   std::istream& input_stream_;
   bool auto_reload_;
   char buffer_[BUFFER_SIZE];
@@ -50,7 +50,7 @@ class input_reader {
     return sign * val;
   };
 
-  template<class data_t, typename std::enable_if_t<std::is_same_v<string, data_t>>* = nullptr>
+  template<class data_t, typename std::enable_if_t<std::is_same_v<std::string, data_t>>* = nullptr>
   data_t read() {
     ready();
     const data_t val = [&](data_t acc = {}) {
@@ -61,7 +61,7 @@ class input_reader {
     return val;
   }
 
-  template <class data_t, size_t N>
+  template <class data_t, std::size_t N>
   std::array<data_t, N> read() {
     ready();
     const auto val = [&](std::array<data_t, N> self = {}) {
@@ -119,7 +119,7 @@ class input_reader {
     ready();
     const data_t sign = (std::is_signed_v<data_t> and peek() == '-') ? ((void)read<char>(), -1.0) : 1.0;
     
-    const auto [before_decimal, has_decimal] = [&](data_t acc = 0.0) -> pair<data_t, bool>{
+    const auto [before_decimal, has_decimal] = [&](data_t acc = 0.0) -> std::pair<data_t, bool>{
       for (char ch = _read(); not is_space(ch); ch = _read()) {
         acc = (acc * 10.0) + ch - '0';
         if (peek() == '.')
