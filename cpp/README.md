@@ -7,7 +7,7 @@ The most basic usage is of the folloing generic form: `const auto x = io.read<ty
 int main() {
   auto io = input_scanner(std::cin);
   const int = io.read<int>();
-  const string = io.read<int>();
+  const string = io.read<string>();
   return 0;
 }
 ```
