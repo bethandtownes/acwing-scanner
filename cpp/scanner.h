@@ -11,21 +11,25 @@ struct is_vector {
   using type                  = T;
   constexpr static bool value = false;
 };
+
 template <class T>
 struct is_vector<std::vector<T>> {
   using type                  = std::vector<T>;
   constexpr static bool value = true;
 };
+
 template <typename T>
 inline constexpr bool is_vector_v = is_vector<T>::value;
 
 template <class T>
 struct is_pair { constexpr static bool value = false; };
+
 template <class T1, class T2>
 struct is_pair<std::pair<T1, T2>> {
   using type                  = std::pair<T1, T2>;
   constexpr static bool value = true;
 };
+
 template <typename T>
 inline constexpr bool is_pair_v = is_pair<T>::value;
 }  // namespace acwing
