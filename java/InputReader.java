@@ -23,18 +23,6 @@ public class InputReader {
     this.autoReload = true;
   }
 
-  public void refreshBuffer() {
-    if (curPos >= numChars) {
-      try {
-        curPos = 0;
-        numChars = stream.read(buffer);
-        if (numChars == -1)
-          throw new InputMismatchException();
-      } catch (IOException e) {
-        throw new InputMismatchException();
-      }
-    }
-  }
 
   public char readChar() {
     ready();
@@ -249,8 +237,21 @@ public class InputReader {
     else
       throw new InputMismatchException();
   }
-  
-  public byte _read() {
+
+  private void refreshBuffer() {
+    if (curPos >= numChars) {
+      try {
+        curPos = 0;
+        numChars = stream.read(buffer);
+        if (numChars == -1)
+          throw new InputMismatchException();
+      } catch (IOException e) {
+        throw new InputMismatchException();
+      }
+    }
+  }
+
+  private byte _read() {
     refreshBuffer();
     return buffer[curPos++];
   };
