@@ -154,7 +154,7 @@ class input_reader {
       }
     }();
 
-    return before_decimal + after_decimal;
+    return sign * (before_decimal + after_decimal);
   }
 
  private:
